@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  width="100%"
+  height="100%"
+  viewBox="0 0 1920 1080"
+  preserveAspectRatio="none"
+>
+  <foreignObject
+    x="0"
+    y="0"
+    width="100%"
+    height="100%"
+  >
+    <xhtml:html
+      xmlns="http://www.w3.org/1999/xhtml"
+      lang="en"
+      style="width:100%;height:100%;margin:0;padding:0;"
+    >
+
+      <xhtml:head>
+
+        <xhtml:meta charset="UTF-8" />
+
+        <xhtml:meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0"
+        />
+
+        <xhtml:title>Home - Classroom</xhtml:title>
+
+        <xhtml:style>
+          *,
+          *::before,
+          *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+          }
+
+          html,
+          body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+            font-family: sans-serif;
+          }
+
+          #mirror-container {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 8px;
+            border-radius: 6px;
+            color: #fff;
+          }
+
+          select {
+            background: #333;
+            color: #fff;
+            border: 1px solid #555;
+            padding: 5px;
+            border-radius: 4px;
+            font-size: 14px;
+            outline: none;
+            cursor: pointer;
+          }
+
+          .message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #444;
+            font-size: 18px;
+            text-align: center;
+          }
+        </xhtml:style>
+
+      </xhtml:head>
+
+      <xhtml:body>
+
+        <xhtml:div id="mirror-container">
+
+          <xhtml:label
+            for="mirror-selector"
+            style="margin-right:5px;font-size:14px;"
+          >
+            Mirror:
+          </xhtml:label>
+
+          <xhtml:select id="mirror-selector">
+
+            <xhtml:option
+              value=""
+              disabled="disabled"
+              selected="selected"
+            >
+              Select a mirror...
+            </xhtml:option>
+
+            <xhtml:option value="https://quantil.jsdelivr.net">
+              quantil.jsdelivr.net (Main)
+            </xhtml:option>
+
+            <xhtml:option value="https://cdn.jsdelivr.net">
+              cdn.jsdelivr.net
+            </xhtml:option>
+
+            <xhtml:option value="https://fastly.jsdelivr.net">
+              fastly.jsdelivr.net
+            </xhtml:option>
+
+            <xhtml:option value="https://testingcf.jsdelivr.net">
+              testingcf.jsdelivr.net
+            </xhtml:option>
+
+            <xhtml:option value="https://gcore.jsdelivr.net">
+              gcore.jsdelivr.net
+            </xhtml:option>
+
+            <xhtml:option value="https://originfastly.jsdelivr.net">
+              originfastly.jsdelivr.net
+            </xhtml:option>
+
+            <xhtml:option value="https://jsd.onmicrosoft.cn">
+              jsd.onmicrosoft.cn
+            </xhtml:option>
+
+            <xhtml:option value="https://cdn.staticdelivr.com">
+              cdn.staticdelivr.com
+            </xhtml:option>
+
+          </xhtml:select>
+
+        </xhtml:div>
+
+        <xhtml:div class="message">
+          Select a CDN mirror from the top right to launch.
+        </xhtml:div>
+
+        <xhtml:script><![CDATA[
+          const filePath =
+            "/gh/58snknarimath9k4ndjascienceihtjmath/nosc1enc3/assets/index.html";
+
+          const mirrorSelector =
+            document.getElementById("mirror-selector");
+
+          mirrorSelector.addEventListener("change", async function (event) {
+            const mirror = event.target.value;
+
+            if (!mirror) {
+              return;
+            }
+
+            const newWindow = window.open("about:blank", "_blank");
+
+            try {
+              const response = await fetch(
+                mirror +
+                filePath +
+                "?t=" +
+                Date.now()
+              );
+
+              if (!response.ok) {
+                throw new Error(response.status);
+              }
+
+              const content = await response.text();
+
+              newWindow.document.open();
+              newWindow.document.write(content);
+              newWindow.document.close();
+
+            } catch (error) {
+              newWindow.document.open();
+
+              newWindow.document.write(`
+                <div style="
+                  color: black;
+                  font-family: sans-serif;
+                  padding: 20px;
+                ">
+                  Failed to load from ${mirror}.
+                  Try another mirror.
+                </div>
+              `);
+
+              newWindow.document.close();
+            }
+
+            event.target.value = "";
+          });
+        ]]></xhtml:script>
+
+      </xhtml:body>
+
+    </xhtml:html>
+  </foreignObject>
+</svg>
