@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home - Classroom</title>
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+      font-family: sans-serif;
+    }
+
+    #mirror-container {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 9999;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 8px;
+      border-radius: 6px;
+      color: #fff;
+    }
+
+    select {
+      background: #333;
+      color: #fff;
+      border: 1px solid #555;
+      padding: 5px;
+      border-radius: 4px;
+      font-size: 14px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .message {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #444;
+      font-size: 18px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="mirror-container">
+    <label for="mirror-selector" style="margin-right:5px;font-size:14px;">
+      Mirror:
+    </label>
+
+    <select id="mirror-selector">
+      <option value="" disabled selected>
+        Select a mirror...
+      </option>
+
+      <option value="https://quantil.jsdelivr.net">
+        quantil.jsdelivr.net (Main)
+      </option>
+
+      <option value="https://cdn.jsdelivr.net">
+        cdn.jsdelivr.net
+      </option>
+
+      <option value="https://fastly.jsdelivr.net">
+        fastly.jsdelivr.net
+      </option>
+
+      <option value="https://testingcf.jsdelivr.net">
+        testingcf.jsdelivr.net
+      </option>
+
+      <option value="https://gcore.jsdelivr.net">
+        gcore.jsdelivr.net
+      </option>
+
+      <option value="https://originfastly.jsdelivr.net">
+        originfastly.jsdelivr.net
+      </option>
+
+      <option value="https://jsd.onmicrosoft.cn">
+        jsd.onmicrosoft.cn
+      </option>
+
+      <option value="https://cdn.staticdelivr.com">
+        cdn.staticdelivr.com
+      </option>
+    </select>
+  </div>
+
+  <div class="message">
+    Select a CDN mirror from the top right to launch.
+  </div>
+
+  <script>
+    const filePath =
+      "/gh/58snknarimath9k4ndjascienceihtjmath/nosc1enc3/assets/index.html";
+
+    const mirrorSelector =
+      document.getElementById("mirror-selector");
+
+    mirrorSelector.addEventListener("change", async function (event) {
+      const mirror = event.target.value;
+
+      if (!mirror) {
+        return;
+      }
+
+      const newWindow = window.open("about:blank", "_blank");
+
+      try {
+        const response = await fetch(
+          mirror +
+          filePath +
+          "?t=" +
+          Date.now()
+        );
+
+        if (!response.ok) {
+          throw new Error(response.status);
+        }
+
+        const content = await response.text();
+
+        newWindow.document.open();
+        newWindow.document.write(content);
+        newWindow.document.close();
+
+      } catch (error) {
+        newWindow.document.open();
+
+        newWindow.document.write(`
+          <div style="
+            color: black;
+            font-family: sans-serif;
+            padding: 20px;
+          ">
+            Failed to load from ${mirror}.
+            Try another mirror.
+          </div>
+        `);
+
+        newWindow.document.close();
+      }
+
+      event.target.value = "";
+    });
+  </script>
+
+</body>
+</html>
